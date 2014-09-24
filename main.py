@@ -39,7 +39,10 @@ args = parser.parse_args()
 
 ''' Fonction de vérification des sous arguments '''
 def checkSousArgs(arg):
-    return int(arg[1])
+    try:
+        return int(arg[1])
+    except ValueError:
+        print (arg[1] + " n'est pas un nombre entier !")
     
 checkSousArgs(args.genre)
 
