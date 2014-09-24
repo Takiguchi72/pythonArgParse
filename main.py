@@ -40,9 +40,20 @@ args = parser.parse_args()
 ''' Fonction de vérification des sous arguments '''
 def checkSousArgs(arg):
     try:
-        return int(arg[1])
+        nb = int(arg[1])
+        if (checkIntNatural(nb) == False):
+            print ("La quantité doit être positive ! (" + arg[1] + ")")
+        return 0
     except ValueError:
-        print (arg[1] + " n'est pas un nombre entier !")
-    
+        print ("Impossible de convertir \"" + arg[1] + "\" en nombre entier !")
+   
+''' Vérifie qu'un nombre est un entier naturel '''     
+def checkIntNatural(nb):
+    if nb > 0:
+        return True
+    else:
+        return False
+
+
 checkSousArgs(args.genre)
 
