@@ -1,4 +1,26 @@
+#!/usr/bin/python3
+''' Fonction de vérification des sous arguments '''
+def checkSousArgs(arg, nomArg):
+    try:
+        # Conversion en entier
+        nb = int(arg[1])
+        if (checkIntNatural(nb) == False):
+            print ("Argument --" + nomArg + " incorrect !\n\t la quantité doit être positive ! (" + arg[1] + ")")
+        # Si il n'y a pas d'erreur, on retourne la valeur 0
+        return 0
+    except ValueError:
+        print ("Erreur : --" + nomArg + ", impossible de convertir \"" + arg[1] + "\" en nombre entier !")
+
+''' Vérifie qu'un nombre est un entier naturel '''     
+def checkIntNatural(nb):
+    if nb > 0:
+        return True
+    else:
+        return False
+
+''' Traitement du programme principal '''
 import argparse
+import logging
 parser = argparse.ArgumentParser()
 # Gestion des arguments positionnels
 ''' Le 1er paramètre correspond au nom que l'on veut attribuer à la playliste [chaine] (Ex: "maPlayliste") '''
@@ -28,24 +50,12 @@ parser.add_argument("--album", nargs = 2, help = "Indique qu'on spécifie le pou
 
 args = parser.parse_args()
 
-''' Fonction de vérification des sous arguments '''
-def checkSousArgs(arg, nomArg):
-    try:
-        nb = int(arg[1])
-        if (checkIntNatural(nb) == False):
-            print ("Argument --" + nomArg + " incorrect !\n\t la quantité doit être positive ! (" + arg[1] + ")")
-        return 0
-    except ValueError:
-        print ("Erreur : --" + nomArg + ", impossible de convertir \"" + arg[1] + "\" en nombre entier !")
-
-''' Vérifie qu'un nombre est un entier naturel '''     
-def checkIntNatural(nb):
-    if nb > 0:
-        return True
-    else:
-        return False
-
 ''' Boucle pour tester l'ensemble des paramètres optionnels, et réalise le test uniquement si l'argument est renseigné '''
 for ARG in ['titre','genre','sousgenre','artiste','album']:
     if getattr(args, ARG) is not None:
         checkSousArgs(getattr(args, ARG), ARG)
+
+
+
+
+# la commande exit(0) permet de quitter le programme sans omettre d'erreur, alors que exit(1) lève une erreur
