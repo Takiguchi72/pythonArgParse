@@ -74,9 +74,10 @@ for ARG in ['titre','genre','sousgenre','artiste','album']:
     if getattr(args, ARG) is not None:
         logging.info(' Argument --' + ARG + ' :\t' + getattr(args, ARG)[0] + ' ; ' + getattr(args, ARG)[1])
         # On vérifie que le 2eme ss-arg de l'argument est correct, on le cast en entier et on remplace le 2eme ss-arg par la nouvelle valeure créée
-        getattr(args, ARG)[1] = checkSousArgs(getattr(args, ARG), ARG)
+        setattr(args, ARG, [getattr(args, ARG)[0], checkSousArgs(getattr(args, ARG), ARG)])
+        #setattr(args, ARG, checkSousArgs(getattr(args, ARG), ARG))
 
-print ('ok')
+print ('ok et args.genre[1] = ' + str(args.genre[1]))
     
 # Ecriture d'une ligne d'étoiles dans le fichier de log, pour séparrer les infos en fonction de chaque exécution
 logging.debug(' *****************************************')
