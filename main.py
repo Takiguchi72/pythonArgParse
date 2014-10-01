@@ -5,38 +5,34 @@ import argparse
 import logging
 
 ''' Fonction de vérification des sous arguments '''
-def checkSousArgs(arg, nomArg):
+def checkSousArgs(unArgument, nomDeLArgument):
     try:
         # Conversion en entier
-        nb = int(arg[1])
-        # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception !
-        if (checkIntNatural(nb) == False):
-            raise Exception('EntierNaturel',' --' + nomArg + ', la valeur "' + arg[1] + '" doit être positive !')
-
-        if (checkIntInfCent(nb) == False):
-            raise Exception('SuperieurACent', ' --' + nomArg + ', la valeur "' + arg[1] + '" doit être inférieure à "100" !')
-
+        unArgument[1] = int(unArgument[1])
+        # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception, et on met dans nb, la valeur absolue qu'il contenait
+        # Si le 2ème ss-arg est inférieur à zéro, on ne garde que sa valeur absolue et on lève et écrit une exception dans le fichier de logs
+        if (checkIntNatural(unArgument[1]) == False):
+            raise Exception('" doit être positive !')
+            unArgument[1] = abs(unArgument[1])
+        # Si le 2ème ss-arg est supérieur à 100, on ne garde pas sa valeur, on la remplace par 0
+        if (checkIntInfCent(unArgument[1]) == False):
+            raise Exception('" doit être inférieure à "100" !')
+            unArgument[1] = 0
+        # Ensuite, on indique qu'on utilise la variable globale args, et on modifie les ss-arg avec la transformation précédament effectuée
         global args
-        setattr(args, nomArg, [arg[0], nb])
+        setattr(args, nomDeLArgument, [unArgument[0], unArgument[1]])
+    except ValueError:
+        logging.error(' --' + nomDeLArgument + ', impossible de convertir "' + unArgument[1] + '" en nombre entier !')
     except Exception as er:
-        if er.args[0] == 'EntierNaturel' and er.args[0] == 'SuperieurACent':
-            logging.error(er.args[1])
-        else:
-            logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
+        logging.warning(' --' + nomDeLArgument + ', la valeur "' + unArgument[1] + er.args[1])
 
 ''' Vérifie qu'un nombre est un entier naturel '''
 def checkIntNatural(nb):
-    if nb > 0:
-        return True
-    else:
-        return False
+    return nb > 0
     
 ''' Vérifie qu'un nombre est inférieur à 100 '''
 def checkIntInfCent(nb):
-    if nb < 100:
-        return True
-    else:
-        return False
+    return nb < 100
 
 ''' Traitement du programme principal '''
 parser = argparse.ArgumentParser()          # Création d'un objet de classe ArgumentParser
@@ -76,17 +72,16 @@ args = parser.parse_args()
 #         checkSousArgs(getattr(args, ARG), ARG)
 
 # Gestion de l'argument genre et ses sous-arguments
-# Pour chaque argument, si ils sont renseignées, on les affiche dans le fichier de logs
-for ARG in ['titre','genre','sousgenre','artiste','album']:
-    if getattr(args, ARG) is not None:
-        logging.info(' Argument --' + ARG + ' :\t' + getattr(args, ARG)[0] + ' ; ' + getattr(args, ARG)[1])
-# On vérifie que le 2em sous argument de genre est bien un entier naturel
-if checkSousArgs(args.genre,'genre') == 0:
-    print ('ok')
-    
-print(args)
-
+# Pour chaque argument qui est dans le dictionnaire dans le for,
+for PremierArg in ['titre','genre','sousgenre','artiste','album']:
+    # Si l'argument est renseigné
+    if getattr(args, PremierArg) is not None:
+        # On écrit la valeur de ses ss-arg dans le fichier de logs
+        logging.info(' Argument --' + PremierArg + ' :\t' + getattr(args, PremierArg)[0] + ' ; ' + getattr(args, PremierArg)[1])
+        # Puis on vérifie que le 2eme ss-arg de l'argument est correct et on le remplace par la nouvelle valeure créée lors de la vérification
+        checkSousArgs(getattr(args, PremierArg), PremierArg)
+# Ecriture d'une ligne d'étoiles dans le fichier de log, pour séparrer les infos en fonction de chaque exécution
 logging.debug(' *****************************************')
 logging.shutdown()
+# la commande exit(0) permet de quitter le programme en indiquant qu'il n'y a pas eu d'erreurs
 exit(0)
-# la commande exit(0) permet de quitter le programme sans omettre d'erreur, alors que exit(1) lève une erreur
