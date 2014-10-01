@@ -1,22 +1,13 @@
 #!/usr/bin/python3
 ''' Fonction de vérification des sous arguments '''
 def checkSousArgs(arg, nomArg):
-    try:
-        # Conversion en entier
-        nb = int(arg[1])
-        # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception !
-        if (checkIntNatural(nb) == False):
-            raise Exception('EntierNaturel',' --' + nomArg + ', la valeur "' + arg[1] + '" doit être positive !')
-        if (checkIntInfCent(nb) == False):
-            raise Exception('SuperieurACent', ' --' + nomArg + ', la valeur "' + arg[1] + '" doit être inférieure à "100" !')
-        # Si il n'y a pas d'erreur, on retourne la valeur 0
-        else:
-            return 0
-    except Exception as er:
-        if er.args[0] == 'EntierNaturel' and er.args[0] == 'SuperieurACent':
-            logging.error(er.args[1])
-        else:
-            logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
+	try:
+	# Conversion en entier
+		nb = int(arg[1])
+		# Cf. 'Optimisation fonction validation'
+		return 0
+	except ValueError:
+		logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
 
 ''' Vérifie qu'un nombre est un entier naturel '''
 def checkIntNatural(nb):
