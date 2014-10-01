@@ -73,10 +73,10 @@ args = parser.parse_args()
 for ARG in ['titre','genre','sousgenre','artiste','album']:
     if getattr(args, ARG) is not None:
         logging.info(' Argument --' + ARG + ' :\t' + getattr(args, ARG)[0] + ' ; ' + getattr(args, ARG)[1])
-# On vérifie que le 2em sous argument de genre est bien un entier naturel
-if checkSousArgs(args.genre,'genre') == 0:
-    print ('ok')
+# On vérifie que le 2eme ss-arg de --genre est correct, et on le cast en entier
+args.genre[1] = checkSousArgs(args.genre,'genre')
+print ('ok')
     
-    
+# Ecriture d'une ligne d'étoiles dans le fichier de log, pour séparrer les infos en fonction de chaque exécution
 logging.debug(' *****************************************')
 # la commande exit(0) permet de quitter le programme sans omettre d'erreur, alors que exit(1) lève une erreur
