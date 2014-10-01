@@ -12,11 +12,12 @@ def checkSousArgs(arg, nomArg):
         # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception !
         if (checkIntNatural(nb) == False):
             raise Exception('EntierNaturel',' --' + nomArg + ', la valeur "' + arg[1] + '" doit être positive !')
+
         if (checkIntInfCent(nb) == False):
             raise Exception('SuperieurACent', ' --' + nomArg + ', la valeur "' + arg[1] + '" doit être inférieure à "100" !')
-        # Si il n'y a pas d'erreur, on retourne la valeur 0
-        else:
-            return 0
+
+        global args
+        setattr(args, nomArg, [arg[0], nb])
     except Exception as er:
         if er.args[0] == 'EntierNaturel' and er.args[0] == 'SuperieurACent':
             logging.error(er.args[1])
@@ -83,7 +84,8 @@ for ARG in ['titre','genre','sousgenre','artiste','album']:
 if checkSousArgs(args.genre,'genre') == 0:
     print ('ok')
     
-    
+print(args)
+
 logging.debug(' *****************************************')
 logging.shutdown()
 exit(0)
