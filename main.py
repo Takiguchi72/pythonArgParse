@@ -3,11 +3,12 @@
 def checkSousArgs(arg, nomArg):
 	try:
 	# Conversion en entier
-		nb = int(arg[1])
+		arg[1] = int(arg[1])
 		# Cf. 'Optimisation fonction validation'
-		return 0
+		return True
 	except ValueError:
 		logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
+
 
 ''' Vérifie qu'un nombre est un entier naturel '''
 def checkIntNatural(nb):
@@ -22,6 +23,7 @@ def checkIntInfCent(nb):
         return True
     else:
         return False
+
 
 ''' Traitement du programme principal '''
 import argparse
@@ -69,8 +71,11 @@ for ARG in ['titre','genre','sousgenre','artiste','album']:
     if getattr(args, ARG) is not None:
         logging.info(' Argument --' + ARG + ' :\t' + getattr(args, ARG)[0] + ' ; ' + getattr(args, ARG)[1])
 # On vérifie que le 2em sous argument de genre est bien un entier naturel
-if checkSousArgs(args.genre,'genre') == 0:
-    print ('ok')
+if checkSousArgs(args.genre,'genre'):
+    	print ('ok')
+
+
+print (type(args.genre[1]))
     
     
 logging.debug(' *****************************************')
