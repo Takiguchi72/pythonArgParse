@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import argparse
+import logging
+
 ''' Fonction de vérification des sous arguments '''
 def checkSousArgs(arg, nomArg):
     try:
@@ -7,11 +12,12 @@ def checkSousArgs(arg, nomArg):
         # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception !
         if (checkIntNatural(nb) == False):
             raise Exception('EntierNaturel',' --' + nomArg + ', la valeur "' + arg[1] + '" doit être positive !')
+
         if (checkIntInfCent(nb) == False):
             raise Exception('SuperieurACent', ' --' + nomArg + ', la valeur "' + arg[1] + '" doit être inférieure à "100" !')
-        # Si il n'y a pas d'erreur, on retourne la valeur 0
-        else:
-            return 0
+
+        global args
+        setattr(args, nomArg, [arg[0], nb])
     except Exception as er:
         if er.args[0] == 'EntierNaturel' and er.args[0] == 'SuperieurACent':
             logging.error(er.args[1])
@@ -33,9 +39,6 @@ def checkIntInfCent(nb):
         return False
 
 ''' Traitement du programme principal '''
-import argparse
-import logging
-
 parser = argparse.ArgumentParser()          # Création d'un objet de classe ArgumentParser
 logging.basicConfig(filename='errors.log', level=logging.DEBUG)   # Les erreurs seront redirigées dans le fichier de log nommé 'errors.log'
 
@@ -81,6 +84,9 @@ for ARG in ['titre','genre','sousgenre','artiste','album']:
 if checkSousArgs(args.genre,'genre') == 0:
     print ('ok')
     
-    
+print(args)
+
 logging.debug(' *****************************************')
+logging.shutdown()
+exit(0)
 # la commande exit(0) permet de quitter le programme sans omettre d'erreur, alors que exit(1) lève une erreur
