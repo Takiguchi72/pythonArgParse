@@ -8,31 +8,24 @@ def checkSousArgs(arg, nomArg):
         nb = int(arg[1])
         # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception !
         if (checkIntNatural(nb) == False):
-            raise Exception('EntierNaturel',' --' + nomArg + ', la valeur "' + arg[1] + '" doit être positive !')
+            raise Exception('" doit être positive !')
         if (checkIntInfCent(nb) == False):
-            raise Exception('SuperieurACent', ' --' + nomArg + ', la valeur "' + arg[1] + '" doit être inférieure à "100" !')
+            raise Exception('" doit être inférieure à "100" !')
         # Si il n'y a pas d'erreur, on retourne la valeur 0
         else:
-            return 0
+            return nb
+    except ValueError as er:
+        logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
     except Exception as er:
-        if er.args[0] == 'EntierNaturel' and er.args[0] == 'SuperieurACent':
-            logging.error(er.args[1])
-        else:
-            logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
+        logging.warning(' --' + nomArg + ', la valeur "' + arg[1] + er.args[1])
 
 ''' Vérifie qu'un nombre est un entier naturel '''
 def checkIntNatural(nb):
-    if nb > 0:
-        return True
-    else:
-        return False
+    return nb > 0
     
 ''' Vérifie qu'un nombre est inférieur à 100 '''
 def checkIntInfCent(nb):
-    if nb < 100:
-        return True
-    else:
-        return False
+    return nb < 100
 
 ''' Traitement du programme principal '''
 import argparse
