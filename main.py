@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+#-*-coding: utf8 -*-
+
 ''' Fonction de vérification des sous arguments '''
 def checkSousArgs(arg, nomArg):
     try:
