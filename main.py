@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import argparse
+import logging
+
 ''' Fonction de vérification des sous arguments '''
 def checkSousArgs(arg, nomArg):
     try:
@@ -33,9 +38,6 @@ def checkIntInfCent(nb):
         return False
 
 ''' Traitement du programme principal '''
-import argparse
-import logging
-
 parser = argparse.ArgumentParser()          # Création d'un objet de classe ArgumentParser
 logging.basicConfig(filename='errors.log', level=logging.DEBUG)   # Les erreurs seront redirigées dans le fichier de log nommé 'errors.log'
 
