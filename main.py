@@ -6,9 +6,10 @@ def checkSousArgs(arg, nomArg):
     try:
         # Conversion en entier
         nb = int(arg[1])
-        # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception !
+        # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception, et on met dans nb, la valeur absolue qu'il contenait
         if (checkIntNatural(nb) == False):
             raise Exception('" doit être positive !')
+            nb = abs(nb)
         if (checkIntInfCent(nb) == False):
             raise Exception('" doit être inférieure à "100" !')
         # Si il n'y a pas d'erreur, on retourne la valeur 0
