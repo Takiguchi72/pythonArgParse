@@ -77,7 +77,7 @@ for PremierArg in ['titre','genre','sousgenre','artiste','album']:
         setattr(args, PremierArg, [getattr(args, PremierArg)[0], checkSousArgs(getattr(args, PremierArg), PremierArg)])
         #setattr(args, ARG, checkSousArgs(getattr(args, ARG), ARG))
 
-print ('ok et args.genre[1] = ' + str(args.genre[1]))
+print ('ok')
     
 # Ecriture d'une ligne d'étoiles dans le fichier de log, pour séparrer les infos en fonction de chaque exécution
 logging.debug(' *****************************************')
