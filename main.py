@@ -8,21 +8,12 @@ import logging
 def checkSousArgs(arg, nomArg):
     try:
         # Conversion en entier
-        nb = int(arg[1])
-        # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception !
-        if (checkIntNatural(nb) == False):
-            raise Exception('EntierNaturel',' --' + nomArg + ', la valeur "' + arg[1] + '" doit être positive !')
+        arg[1] = int(arg[1])
+        # Cf. 'Optimisation fonction validation'
+        return True
+    except ValueError:
+        logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
 
-        if (checkIntInfCent(nb) == False):
-            raise Exception('SuperieurACent', ' --' + nomArg + ', la valeur "' + arg[1] + '" doit être inférieure à "100" !')
-
-        global args
-        setattr(args, nomArg, [arg[0], nb])
-    except Exception as er:
-        if er.args[0] == 'EntierNaturel' and er.args[0] == 'SuperieurACent':
-            logging.error(er.args[1])
-        else:
-            logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
 
 ''' Vérifie qu'un nombre est un entier naturel '''
 def checkIntNatural(nb):
@@ -37,6 +28,7 @@ def checkIntInfCent(nb):
         return True
     else:
         return False
+
 
 ''' Traitement du programme principal '''
 parser = argparse.ArgumentParser()          # Création d'un objet de classe ArgumentParser
@@ -81,8 +73,11 @@ for ARG in ['titre','genre','sousgenre','artiste','album']:
     if getattr(args, ARG) is not None:
         logging.info(' Argument --' + ARG + ' :\t' + getattr(args, ARG)[0] + ' ; ' + getattr(args, ARG)[1])
 # On vérifie que le 2em sous argument de genre est bien un entier naturel
-if checkSousArgs(args.genre,'genre') == 0:
+if checkSousArgs(args.genre,'genre'):
     print ('ok')
+
+
+print (type(args.genre[1]))
     
 print(args)
 
