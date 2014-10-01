@@ -85,4 +85,6 @@ if checkSousArgs(args.genre,'genre') == 0:
     
     
 logging.debug(' *****************************************')
+logging.shutdown()
+exit(0)
 # la commande exit(0) permet de quitter le programme sans omettre d'erreur, alors que exit(1) lève une erreur
