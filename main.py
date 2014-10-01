@@ -2,10 +2,10 @@
 #-*-coding: utf8 -*-
 
 ''' Fonction de vérification des sous arguments '''
-def checkSousArgs(arg, nomArg):
+def checkSousArgs(unArgument, nomDeLArgument):
     try:
         # Conversion en entier
-        nb = int(arg[1])
+        nb = int(unArgument[1])
         # Si nb n'est pas un entier naturel et qu'il est supérieur ou égal à 100, on lève une exception, et on met dans nb, la valeur absolue qu'il contenait
         if (checkIntNatural(nb) == False):
             raise Exception('" doit être positive !')
@@ -16,9 +16,9 @@ def checkSousArgs(arg, nomArg):
         else:
             return nb
     except ValueError as er:
-        logging.error(' --' + nomArg + ', impossible de convertir "' + arg[1] + '" en nombre entier !')
+        logging.error(' --' + nomDeLArgument + ', impossible de convertir "' + unArgument[1] + '" en nombre entier !')
     except Exception as er:
-        logging.warning(' --' + nomArg + ', la valeur "' + arg[1] + er.args[1])
+        logging.warning(' --' + nomDeLArgument + ', la valeur "' + unArgument[1] + er.args[1])
 
 ''' Vérifie qu'un nombre est un entier naturel '''
 def checkIntNatural(nb):
@@ -70,11 +70,11 @@ args = parser.parse_args()
 
 # Gestion de l'argument genre et ses sous-arguments
 # Pour chaque argument, si ils sont renseignées, on les affiche dans le fichier de logs
-for ARG in ['titre','genre','sousgenre','artiste','album']:
-    if getattr(args, ARG) is not None:
-        logging.info(' Argument --' + ARG + ' :\t' + getattr(args, ARG)[0] + ' ; ' + getattr(args, ARG)[1])
+for PremierArg in ['titre','genre','sousgenre','artiste','album']:
+    if getattr(args, PremierArg) is not None:
+        logging.info(' Argument --' + PremierArg + ' :\t' + getattr(args, PremierArg)[0] + ' ; ' + getattr(args, PremierArg)[1])
         # On vérifie que le 2eme ss-arg de l'argument est correct, on le cast en entier et on remplace le 2eme ss-arg par la nouvelle valeure créée
-        setattr(args, ARG, [getattr(args, ARG)[0], checkSousArgs(getattr(args, ARG), ARG)])
+        setattr(args, PremierArg, [getattr(args, PremierArg)[0], checkSousArgs(getattr(args, PremierArg), PremierArg)])
         #setattr(args, ARG, checkSousArgs(getattr(args, ARG), ARG))
 
 print ('ok et args.genre[1] = ' + str(args.genre[1]))
